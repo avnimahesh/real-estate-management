@@ -1,9 +1,0 @@
-FROM node:18
-WORKDIR /backend
-ENV NODE_ENV development
-COPY package*.json /backend
-RUN npm install
-COPY . /backend
-EXPOSE 5000
-CMD ["node", "index.js"]
-CMD ["npm", "start"]
