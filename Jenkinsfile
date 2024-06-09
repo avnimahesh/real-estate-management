@@ -43,13 +43,13 @@ pipeline {
         stage('Building images') {
             steps{
                 script {
-                    sh "whoami && pwd"
-                    sh "sleep 20"
-                    env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
-                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend ."
-                    sh "cd /home/ubuntu/real-estate-management/frontend/"
+                    sh "echo $HOME && pwd"
+                    sh "cd frontend"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
                     sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend ."
+                    sh "cd backend-fastify"
+                    env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
+                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend ."
                 }
             }
         }
