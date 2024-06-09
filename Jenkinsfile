@@ -43,11 +43,10 @@ pipeline {
         stage('Building images') {
             steps{
                 script {
-                    sh "echo $HOME && pwd"
-                    sh "cd frontend"
+                    sh "cd $HOME/workspace/real-estate-management/frontend/"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
                     sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend ."
-                    sh "cd backend-fastify"
+                    sh "cd $HOME/workspace/real-estate-management/backend-fastify/"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
                     sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend ."
                 }
