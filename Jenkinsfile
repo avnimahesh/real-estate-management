@@ -31,6 +31,7 @@ pipeline {
             steps {
                 script {
                     sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                    sh "docker ps -a -q | xargs docker rm -f || true"
                     sh "docker images -a -q | xargs docker rmi -f || true"
                 }
  
@@ -42,7 +43,8 @@ pipeline {
         stage('Building images') {
             steps{
                 script {
-                    sh "cd /home/ubuntu/real-estate-management/backend/"
+                    sh "whoami && pwd"
+                    sh "sleep 20"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
                     sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend ."
                     sh "cd /home/ubuntu/real-estate-management/frontend/"
