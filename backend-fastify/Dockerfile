@@ -1,9 +1,8 @@
 FROM node:18
 WORKDIR /backend
-ENV NODE_ENV development
-COPY package*.json /backend
+COPY . .
 RUN npm install
-COPY . /backend
-EXPOSE 3000
+EXPOSE 8000
 CMD ["node", "index.js"]
-CMD ["npm", "start"]
+CMD ["npm", "start", "dev", "--host", "0.0.0.0", "--port", "8000"]
+RUN npm run db:seeder
