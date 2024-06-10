@@ -43,12 +43,10 @@ pipeline {
         stage('Building images') {
             steps{
                 script {
-                    sh "cd $HOME/workspace/real-estate-management/frontend/"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
-                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend ."
-                    sh "cd $HOME/workspace/real-estate-management/backend-fastify/"
+                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend -f $HOME/workspace/real-estate-management/frontend/Dockerfile $HOME/workspace/real-estate-management/frontend/"
                     env.git_commit_sha = sh(script: 'git rev-parse --short=6 HEAD', returnStdout: true).trim( )
-                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend ."
+                    sh "docker build -t ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend -f $HOME/workspace/real-estate-management/backend-fastify/Dockerfile $HOME/workspace/real-estate-management/backend-fastify/"
                 }
             }
         }
@@ -67,11 +65,11 @@ pipeline {
         stage('Creating container for Frontend and backend') {
             steps{ 
                 script {
-                    sh "ssh ubuntu@54.67.78.130 /home/ubuntu/login-ecr.sh"
-                    sh "ssh ubuntu@54.67.78.130 sudo docker rm -f ${IMAGE_REPO_NAME}-${BRANCH_NAME} || true"
-                    sh "ssh ubuntu@54.67.78.130 sudo docker images -a -q | xargs docker rmi -f || true"
-                    sh "ssh ubuntu@54.67.78.130 sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
-                    sh "ssh ubuntu@54.67.78.130 sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
+                    sh "sh $HOME/login-ecr.sh"
+                    sh "sudo docker rm -f ${IMAGE_REPO_NAME}-${BRANCH_NAME} || true"
+                    sh "sudo docker images -a -q | xargs docker rmi -f || true"
+                    sh "sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
+                    sh "sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
                 }
             }
         }
