@@ -66,10 +66,10 @@ pipeline {
             steps{ 
                 script {
                     sh "sh $HOME/login-ecr.sh"
-                    sh "sudo docker rm -f ${IMAGE_REPO_NAME}-${BRANCH_NAME} || true"
-                    sh "sudo docker images -a -q | xargs docker rmi -f || true"
-                    sh "sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
-                    sh "sudo docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
+                    sh "docker rm -f ${IMAGE_REPO_NAME}-${BRANCH_NAME} || true"
+                    sh "docker images -a -q | xargs docker rmi -f || true"
+                    sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
+                    sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
                 }
             }
         }
