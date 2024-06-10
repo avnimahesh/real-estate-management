@@ -66,7 +66,7 @@ pipeline {
             steps{ 
                 script {
                     sh "sh $HOME/login-ecr.sh"
-                    sh "docker rm -f $(docker ps -q -a) || true"
+                    sh "docker ps -a -q | xargs docker rm -f || true"
                     sh "docker images -a -q | xargs docker rmi -f || true"
                     sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}_front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
                     sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}_back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
