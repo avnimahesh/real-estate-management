@@ -31,9 +31,7 @@ pipeline {
             steps {
                 script {
                     sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-                    sh "docker ps -a -q | xargs docker rm -f || true"
                     sh "docker images -a -q | xargs docker rmi -f || true"
-                    sh "echo y | docker system prune"
                 }
  
             }
@@ -69,6 +67,7 @@ pipeline {
                     sh "sh $HOME/login-ecr.sh"
                     sh "docker ps -a -q | xargs docker rm -f || true"
                     sh "docker images -a -q | xargs docker rmi -f || true"
+                    sh "echo y | docker system prune"
                     sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}_front1 -p 4200:4200 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_frontend"
                     sh "docker run -itd --name ${IMAGE_REPO_NAME}-${BRANCH_NAME}_back1 -p 8000:8000 --restart always ${REPOSITORY_URI}:${BRANCH_NAME}-${env.git_commit_sha}.app_backend"
                 }
