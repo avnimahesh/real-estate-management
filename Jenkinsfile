@@ -21,7 +21,7 @@ pipeline {
         AWS_ACCOUNT_ID="791100541706"
         AWS_DEFAULT_REGION="us-east-1"
         BRANCH_NAME="avni_development"
-        IMAGE_REPO_NAME="real-estate.avni"
+        IMAGE_REPO_NAME="real-estate-management"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
  
