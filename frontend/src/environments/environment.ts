@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   api: {
     server: 'http://50.19.174.67:8000/',
-    mapKey: '8fa640a8-9b8a-4979-b131-f120101faa76',
+    mapKey: '71fa70bf-e75b-44fc-8931-2d1431c8181a',
     googleAuthClientId: '',
     webSocketUrl: "ws://50.19.174.67:8000/websocket"
   }
